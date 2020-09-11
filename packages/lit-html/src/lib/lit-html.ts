@@ -117,8 +117,9 @@ export const ATTRIBUTE_PART = 1;
 export const NODE_PART = 2;
 export const PROPERTY_PART = 3;
 export const BOOLEAN_ATTRIBUTE_PART = 4;
-const ELEMENT_PART = 5;
-const COMMENT_PART = 6;
+export const EVENT_PART = 5;
+const ELEMENT_PART = 6;
+const COMMENT_PART = 7;
 
 type ResultType = typeof HTML_RESULT | typeof SVG_RESULT;
 
@@ -188,7 +189,8 @@ export type AttributePartInfo = {
   readonly type:
     | typeof ATTRIBUTE_PART
     | typeof PROPERTY_PART
-    | typeof BOOLEAN_ATTRIBUTE_PART;
+    | typeof BOOLEAN_ATTRIBUTE_PART
+    | typeof EVENT_PART;
   strings?: ReadonlyArray<string>;
   name: string;
   tagName: string;
@@ -208,7 +210,7 @@ export type DirectiveClass = {new (part: PartInfo): Directive};
  * This utility type extracts the signature of a directive class's render()
  * method so we can use it for the type of the generated directive function.
  */
-type DirectiveProps<C extends DirectiveClass> = Parameters<
+export type DirectiveParameters<C extends DirectiveClass> = Parameters<
   InstanceType<C>['render']
 >;
 
@@ -218,7 +220,7 @@ type DirectiveProps<C extends DirectiveClass> = Parameters<
  */
 type DirectiveResult<C extends DirectiveClass = DirectiveClass> = {
   _$litDirective$: C;
-  values: DirectiveProps<C>;
+  values: DirectiveParameters<C>;
 };
 
 /**
@@ -226,7 +228,7 @@ type DirectiveResult<C extends DirectiveClass = DirectiveClass> = {
  * function has the same parameters as the directive's render() method.
  */
 export const directive = <C extends DirectiveClass>(c: C) => (
-  ...values: DirectiveProps<C>
+  ...values: DirectiveParameters<C>
 ): DirectiveResult<C> => ({
   _$litDirective$: c,
   values,
@@ -695,7 +697,8 @@ export class AttributePart {
   readonly type = ATTRIBUTE_PART as
     | typeof ATTRIBUTE_PART
     | typeof PROPERTY_PART
-    | typeof BOOLEAN_ATTRIBUTE_PART;
+    | typeof BOOLEAN_ATTRIBUTE_PART
+    | typeof EVENT_PART;
   readonly element: HTMLElement;
   readonly name: string;
 
@@ -868,6 +871,7 @@ type EventListenerWithOptions = EventListenerOrEventListenerObject &
  * to add and remove the part as a listener when the event options change.
  */
 export class EventPart extends AttributePart {
+  readonly type = EVENT_PART;
   __eventContext?: unknown;
 
   constructor(...args: ConstructorParameters<typeof AttributePart>) {
