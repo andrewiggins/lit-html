@@ -26,6 +26,12 @@ jobs:
             --config lit-html/kitchen-sink/tachometer.json \
             --json-file lit-html/kitchen-sink/results.json
 
+      - name: Upload kitchen sink results
+        uses: actions/upload-artifact@v2
+        with:
+          name: kitchen-sink-results.json
+          path: packages/benchmarks/lit-html/kitchen-sink/results.json
+
       - name: Report lit-html-kitchen-sink
         uses: andrewiggins/tachometer-reporter-action@v2
         with:
@@ -40,6 +46,12 @@ jobs:
           npx tachometer \
             --config lit-element/stub1/tachometer.json \
             --json-file lit-element/stub1/results.json
+
+      - name: Upload stub1 results
+        uses: actions/upload-artifact@v2
+        with:
+          name: stub1-results.json
+          path: packages/benchmarks/lit-element/stub1/results.json
 
       - name: Report lit-element-stub1
         uses: andrewiggins/tachometer-reporter-action@v2
