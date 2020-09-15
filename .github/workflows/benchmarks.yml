@@ -33,7 +33,7 @@ jobs:
           path: packages/benchmarks/lit-html/kitchen-sink/results.json
 
       - name: Report lit-html-kitchen-sink
-        uses: andrewiggins/tachometer-reporter-action@master
+        uses: andrewiggins/tachometer-reporter-action@v2
         with:
           report-id: lit-html-kitchen-sink
           path: packages/benchmarks/lit-html/kitchen-sink/results.json
@@ -54,7 +54,7 @@ jobs:
           path: packages/benchmarks/lit-element/stub1/results.json
 
       - name: Report lit-element-stub1
-        uses: andrewiggins/tachometer-reporter-action@master
+        uses: andrewiggins/tachometer-reporter-action@v2
         with:
           report-id: lit-element-stub1
           path: packages/benchmarks/lit-element/stub1/results.json
